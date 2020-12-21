@@ -22,11 +22,13 @@ npm install estree-util-attach-comments
 
 ## Use
 
-Say we have this weird code:
+Say we have this weird `code`:
 
 ```js
 /* 1 */ function /* 2 */ a /* 3 */ (/* 4 */b) /* 5 */ { /* 6 */ return /* 7 */ b + /* 8 */ 1 /* 9 */ }
 ```
+
+And our script, `example.js`, looks as follows:
 
 ```js
 var acorn = require('acorn')
