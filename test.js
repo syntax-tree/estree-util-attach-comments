@@ -8,6 +8,21 @@ var attachComments = require('.')
 
 test('estree-attach-comments (recast)', function (t) {
   t.equal(
+    recast.print(attachComments(acorn.parse('', {ecmaVersion: 2020}), null))
+      .code,
+    '',
+    'should support null comments'
+  )
+
+  t.equal(
+    recast.print(
+      attachComments(acorn.parse('', {ecmaVersion: 2020}), undefined)
+    ).code,
+    '',
+    'should support undefined comments'
+  )
+
+  t.equal(
     recast.print(attachComments(...parse(''))).code,
     '',
     'should support an empty document'

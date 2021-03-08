@@ -5,7 +5,13 @@ module.exports = attachComments
 var push = [].push
 
 function attachComments(tree, comments) {
-  walk(tree, {comments: comments.concat().sort(compare), index: 0})
+  walk(tree, {
+    comments:
+      comments === null || comments === undefined
+        ? []
+        : comments.concat().sort(compare),
+    index: 0
+  })
   return tree
 }
 
