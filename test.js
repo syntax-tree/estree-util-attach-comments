@@ -1,7 +1,7 @@
 import test from 'tape'
 import {parse as acornParse} from 'acorn'
 import recast from 'recast'
-import {walk} from 'estree-walker'
+import {visit} from 'estree-util-visit'
 import {attachComments} from './index.js'
 
 /**
@@ -178,17 +178,21 @@ function parse(doc) {
 }
 
 /**
- * @param {EstreeNode|EstreeComment|EstreeNode[]|EstreeComment[]} value
+ * @param {EstreeNode|EstreeNode[]} value
  * @returns {void}
  */
 function removePositions(value) {
   // @ts-ignore
-  walk(value, {
-    enter(node) {
+  visit(
+    value,
+    /**
+     * @param {EstreeNode} node
+     */
+    function (node) {
       // @ts-ignore they most certainly exist.
       delete node.start
       // @ts-ignore they most certainly exist.
       delete node.end
     }
-  })
+  )
 }
