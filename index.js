@@ -1,10 +1,6 @@
-'use strict'
-
-module.exports = attachComments
-
 var push = [].push
 
-function attachComments(tree, comments) {
+export function attachComments(tree, comments) {
   walk(tree, {comments: comments.concat().sort(compare), index: 0})
   return tree
 }

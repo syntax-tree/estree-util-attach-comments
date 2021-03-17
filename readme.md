@@ -14,6 +14,9 @@ tree.
 
 ## Install
 
+This package is ESM only: Node 12+ is needed to use it and it must be `import`ed
+instead of `require`d.
+
 [npm][]:
 
 ```sh
@@ -31,9 +34,9 @@ Say we have this weird `code`:
 And our script, `example.js`, looks as follows:
 
 ```js
-var acorn = require('acorn')
-var recast = require('recast')
-var attachComments = require('estree-util-attach-comments')
+import * as acorn from 'acorn'
+import recast from 'recast'
+import {attachComments} from 'estree-util-attach-comments'
 
 var comments = []
 var tree = acorn.parse(code, {ecmaVersion: 2020, onComment: comments})
@@ -67,6 +70,9 @@ Note that the lines are added by `recast` in this case.
 And, some of these weird comments are off, but they’re pretty close.
 
 ## API
+
+This package exports the following identifiers: `attachComment`.
+There is no default export.
 
 ### `attachComment(tree, comments)`
 

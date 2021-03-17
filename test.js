@@ -1,10 +1,8 @@
-'use strict'
-
-var test = require('tape')
-var acorn = require('acorn')
-var recast = require('recast')
-var walk = require('estree-walker').walk
-var attachComments = require('.')
+import test from 'tape'
+import {parse as acornParse} from 'acorn'
+import recast from 'recast'
+import {walk} from 'estree-walker'
+import {attachComments} from './index.js'
 
 test('estree-attach-comments (recast)', function (t) {
   t.equal(
@@ -75,7 +73,7 @@ test('estree-attach-comments (recast)', function (t) {
   )
 
   var comments = []
-  var tree = acorn.parse('/* 1 */ a /* 2 */ + /* 3 */ 1', {
+  var tree = acornParse('/* 1 */ a /* 2 */ + /* 3 */ 1', {
     ecmaVersion: 2020,
     onComment: comments
   })
@@ -89,7 +87,7 @@ test('estree-attach-comments (recast)', function (t) {
   )
 
   comments = []
-  tree = acorn.parse('/* 1 */ a /* 2 */ + /* 3 */ 1', {
+  tree = acornParse('/* 1 */ a /* 2 */ + /* 3 */ 1', {
     ecmaVersion: 2020,
     onComment: comments
   })
@@ -103,7 +101,7 @@ test('estree-attach-comments (recast)', function (t) {
   )
 
   comments = []
-  tree = acorn.parse('/* 1 */ a /* 2 */ + /* 3 */ 1', {
+  tree = acornParse('/* 1 */ a /* 2 */ + /* 3 */ 1', {
     ecmaVersion: 2020,
     ranges: true,
     onComment: comments
@@ -118,7 +116,7 @@ test('estree-attach-comments (recast)', function (t) {
   )
 
   comments = []
-  tree = acorn.parse('/* 1 */ a /* 2 */ + /* 3 */ 1', {
+  tree = acornParse('/* 1 */ a /* 2 */ + /* 3 */ 1', {
     ecmaVersion: 2020,
     locations: true,
     onComment: comments
@@ -137,13 +135,13 @@ test('estree-attach-comments (recast)', function (t) {
 
 function parse(doc) {
   var comments = []
-  var tree = acorn.parse(doc, {ecmaVersion: 2020, onComment: comments})
+  var tree = acornParse(doc, {ecmaVersion: 2020, onComment: comments})
   return [tree, comments]
 }
 
 function removePositions(value) {
   walk(value, {
-    enter: function (node) {
+    enter(node) {
       delete node.start
       delete node.end
     }
