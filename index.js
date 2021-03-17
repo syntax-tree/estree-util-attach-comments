@@ -1,15 +1,46 @@
 var push = [].push
 
+/**
+ * @typedef {import('estree').BaseNode} EstreeNode
+ * @typedef {import('estree').Comment} EstreeComment
+ *
+ * @typedef State
+ * @property {EstreeComment[]} comments
+ * @property {number} index
+ *
+ * @typedef Fields
+ * @property {boolean} leading
+ * @property {boolean} trailing
+ */
+
+/**
+ * Attach semistandard estree comment nodes to the tree.
+ *
+ * @param {EstreeNode} tree
+ * @param {EstreeComment[]} [comments]
+ */
 export function attachComments(tree, comments) {
-  walk(tree, {comments: comments.concat().sort(compare), index: 0})
+  var list = (comments || []).concat().sort(compare)
+  if (list.length) walk(tree, {comments: list, index: 0})
   return tree
 }
 
+/**
+ * Attach semistandard estree comment nodes to the tree.
+ *
+ * @param {EstreeNode} node
+ * @param {State} state
+ */
 function walk(node, state) {
+  /** @type {EstreeNode[]} */
   var children = []
+  /** @type {EstreeComment[]} */
   var comments = []
+  /** @type {string} */
   var key
+  /** @type {EstreeNode|EstreeNode[]} */
   var value
+  /** @type {number} */
   var index
 
   // Done, we can quit.
@@ -23,9 +54,7 @@ function walk(node, state) {
 
     // Ignore comments.
     if (value && typeof value === 'object' && key !== 'comments') {
-      if (typeof value.type === 'string') {
-        children.push(value)
-      } else if (Array.isArray(value)) {
+      if (Array.isArray(value)) {
         index = -1
 
         while (++index < value.length) {
@@ -33,6 +62,8 @@ function walk(node, state) {
             children.push(value[index])
           }
         }
+      } else if (typeof value.type === 'string') {
+        children.push(value)
       }
     }
   }
@@ -62,11 +93,19 @@ function walk(node, state) {
   )
 
   if (comments.length) {
+    // @ts-ignore, yes, because they’re nonstandard.
     node.comments = comments
   }
 }
 
+/**
+ * @param {State} state
+ * @param {EstreeNode} node
+ * @param {boolean} compareEnd
+ * @param {Fields} fields
+ */
 function slice(state, node, compareEnd, fields) {
+  /** @type {EstreeComment[]} */
   var result = []
 
   while (
@@ -79,6 +118,12 @@ function slice(state, node, compareEnd, fields) {
   return result
 }
 
+/**
+ * @param {EstreeNode|EstreeComment} left
+ * @param {EstreeNode|EstreeComment} right
+ * @param {boolean} [compareEnd]
+ * @returns {number}
+ */
 function compare(left, right, compareEnd) {
   var field = compareEnd ? 'end' : 'start'
 
@@ -98,6 +143,7 @@ function compare(left, right, compareEnd) {
   // Just `start` (and `end`) on nodes.
   // Default in most parsers.
   if ('start' in left && field in right) {
+    // @ts-ignore Added by Acorn
     return left.start - right[field]
   }
 

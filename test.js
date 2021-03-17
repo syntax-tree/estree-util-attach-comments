@@ -4,6 +4,12 @@ import recast from 'recast'
 import {walk} from 'estree-walker'
 import {attachComments} from './index.js'
 
+/**
+ * @typedef {import('estree').BaseNode} EstreeNode
+ * @typedef {import('estree').Program} EstreeProgram
+ * @typedef {import('estree').Comment} EstreeComment
+ */
+
 test('estree-attach-comments (recast)', function (t) {
   t.equal(
     recast.print(attachComments(...parse(''))).code,
@@ -72,9 +78,13 @@ test('estree-attach-comments (recast)', function (t) {
     'should support a bunch of line comments'
   )
 
+  /** @type {EstreeComment[]} */
   var comments = []
+  /** @type {EstreeProgram} */
+  // @ts-ignore
   var tree = acornParse('/* 1 */ a /* 2 */ + /* 3 */ 1', {
     ecmaVersion: 2020,
+    // @ts-ignore
     onComment: comments
   })
 
@@ -87,8 +97,25 @@ test('estree-attach-comments (recast)', function (t) {
   )
 
   comments = []
+  // @ts-ignore
+  tree = acornParse('1 + 1', {
+    ecmaVersion: 2020,
+    // @ts-ignore
+    onComment: comments
+  })
+
+  t.equal(
+    recast.print(attachComments(tree)).code,
+    '1 + 1;',
+    'should not fail w/o comments'
+  )
+
+  comments = []
+  /** @type {EstreeProgram} */
+  // @ts-ignore
   tree = acornParse('/* 1 */ a /* 2 */ + /* 3 */ 1', {
     ecmaVersion: 2020,
+    // @ts-ignore
     onComment: comments
   })
 
@@ -101,9 +128,11 @@ test('estree-attach-comments (recast)', function (t) {
   )
 
   comments = []
+  // @ts-ignore
   tree = acornParse('/* 1 */ a /* 2 */ + /* 3 */ 1', {
     ecmaVersion: 2020,
     ranges: true,
+    // @ts-ignore
     onComment: comments
   })
 
@@ -116,9 +145,11 @@ test('estree-attach-comments (recast)', function (t) {
   )
 
   comments = []
+  // @ts-ignore
   tree = acornParse('/* 1 */ a /* 2 */ + /* 3 */ 1', {
     ecmaVersion: 2020,
     locations: true,
+    // @ts-ignore
     onComment: comments
   })
 
@@ -133,16 +164,30 @@ test('estree-attach-comments (recast)', function (t) {
   t.end()
 })
 
+/**
+ * @param {string} doc
+ * @returns {[EstreeProgram, EstreeComment[]]}
+ */
 function parse(doc) {
+  /** @type {EstreeComment[]} */
   var comments = []
+  /** @type {EstreeProgram} */
+  // @ts-ignore
   var tree = acornParse(doc, {ecmaVersion: 2020, onComment: comments})
   return [tree, comments]
 }
 
+/**
+ * @param {EstreeNode|EstreeComment|EstreeNode[]|EstreeComment[]} value
+ * @returns {void}
+ */
 function removePositions(value) {
+  // @ts-ignore
   walk(value, {
     enter(node) {
+      // @ts-ignore they most certainly exist.
       delete node.start
+      // @ts-ignore they most certainly exist.
       delete node.end
     }
   })
