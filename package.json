@@ -32,6 +32,9 @@
     "index.d.ts",
     "index.js"
   ],
+  "dependencies": {
+    "@types/estree": "^0.0.46"
+  },
   "devDependencies": {
     "@types/acorn": "^4.0.0",
     "@types/tape": "^4.0.0",
