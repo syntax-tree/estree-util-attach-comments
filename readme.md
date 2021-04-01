@@ -71,10 +71,10 @@ And, some of these weird comments are off, but they’re pretty close.
 
 ## API
 
-This package exports the following identifiers: `attachComment`.
+This package exports the following identifiers: `attachComments`.
 There is no default export.
 
-### `attachComment(tree, comments)`
+### `attachComments(tree, comments)`
 
 Attach semistandard estree comment nodes to the tree.
 
