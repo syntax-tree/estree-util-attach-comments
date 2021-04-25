@@ -2,11 +2,13 @@ var push = [].push
 
 /**
  * @typedef {import('estree').BaseNode} EstreeNode
- * @typedef {import('estree').Comment} EstreeComment
+ * @typedef {import('estree').Comment & {leading: boolean, trailing: boolean}} EstreeComment
+ * leading and trailing properties of `EstreeComment` are non-estree compliant and are added by this package
  *
  * @typedef State
  * @property {EstreeComment[]} comments
  * @property {number} index
+ * @property {boolean} isEstreeNode if the node is compliant with {EstreeNode}. If you pass `false` (the default), `recast` style is considered instead of `estree`.
  *
  * @typedef Fields
  * @property {boolean} leading
@@ -18,10 +20,11 @@ var push = [].push
  *
  * @param {EstreeNode} tree
  * @param {EstreeComment[]} [comments]
+ * @param {boolean} isEstreeNode
  */
-export function attachComments(tree, comments) {
+export function attachComments(tree, comments, isEstreeNode = false) {
   var list = (comments || []).concat().sort(compare)
-  if (list.length) walk(tree, {comments: list, index: 0})
+  if (list.length) walk(tree, {comments: list, index: 0, isEstreeNode})
   return tree
 }
 
@@ -93,8 +96,22 @@ function walk(node, state) {
   )
 
   if (comments.length) {
-    // @ts-ignore, yes, because they’re nonstandard.
-    node.comments = comments
+    if (state.isEstreeNode) {
+      const leading = []
+      const trailing = []
+      for (const comment of comments) {
+        if (comment.leading) {
+          leading.push(comment)
+        } else {
+          trailing.push(comment)
+        }
+      }
+      node.leadingComments = leading
+      node.trailingComments = trailing
+    } else {
+      // @ts-ignore, yes, because they’re nonstandard.
+      node.comments = comments
+    }
   }
 }
 

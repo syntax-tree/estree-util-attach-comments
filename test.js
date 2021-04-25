@@ -7,7 +7,7 @@ import {attachComments} from './index.js'
 /**
  * @typedef {import('estree').BaseNode} EstreeNode
  * @typedef {import('estree').Program} EstreeProgram
- * @typedef {import('estree').Comment} EstreeComment
+ * @typedef {import('estree').Comment & {leading: boolean, trailing: boolean}} EstreeComment
  */
 
 test('estree-attach-comments (recast)', function (t) {
