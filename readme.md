@@ -75,7 +75,8 @@ With espree:
 import espree from 'espree'
 import {attachComments} from 'estree-util-attach-comments'
 
-tree = espree.parse(code, {comment: true, ecmaVersion: 2020})
+var tree = espree.parse(code, {comment: true, ecmaVersion: 2020})
+
 attachComments(tree, tree.comments)
 ```
 
