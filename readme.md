@@ -69,6 +69,17 @@ a(
 Note that the lines are added by `recast` in this case.
 And, some of these weird comments are off, but they’re pretty close.
 
+With espree:
+
+```js
+import espree from 'espree'
+import {attachComments} from 'estree-util-attach-comments'
+
+var tree = espree.parse(code, {comment: true, ecmaVersion: 2020})
+
+attachComments(tree, tree.comments)
+```
+
 ## API
 
 This package exports the following identifiers: `attachComments`.
