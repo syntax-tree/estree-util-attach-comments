@@ -81,10 +81,10 @@ test('estree-attach-comments (recast)', function (t) {
   /** @type {EstreeComment[]} */
   var comments = []
   /** @type {EstreeProgram} */
-  // @ts-ignore
+  // @ts-expect-error
   var tree = acornParse('/* 1 */ a /* 2 */ + /* 3 */ 1', {
     ecmaVersion: 2020,
-    // @ts-ignore
+    // @ts-expect-error
     onComment: comments
   })
 
@@ -97,10 +97,10 @@ test('estree-attach-comments (recast)', function (t) {
   )
 
   comments = []
-  // @ts-ignore
+  // @ts-expect-error
   tree = acornParse('1 + 1', {
     ecmaVersion: 2020,
-    // @ts-ignore
+    // @ts-expect-error
     onComment: comments
   })
 
@@ -112,10 +112,10 @@ test('estree-attach-comments (recast)', function (t) {
 
   comments = []
   /** @type {EstreeProgram} */
-  // @ts-ignore
+  // @ts-expect-error
   tree = acornParse('/* 1 */ a /* 2 */ + /* 3 */ 1', {
     ecmaVersion: 2020,
-    // @ts-ignore
+    // @ts-expect-error
     onComment: comments
   })
 
@@ -128,11 +128,11 @@ test('estree-attach-comments (recast)', function (t) {
   )
 
   comments = []
-  // @ts-ignore
+  // @ts-expect-error
   tree = acornParse('/* 1 */ a /* 2 */ + /* 3 */ 1', {
     ecmaVersion: 2020,
     ranges: true,
-    // @ts-ignore
+    // @ts-expect-error
     onComment: comments
   })
 
@@ -145,11 +145,11 @@ test('estree-attach-comments (recast)', function (t) {
   )
 
   comments = []
-  // @ts-ignore
+  // @ts-expect-error
   tree = acornParse('/* 1 */ a /* 2 */ + /* 3 */ 1', {
     ecmaVersion: 2020,
     locations: true,
-    // @ts-ignore
+    // @ts-expect-error
     onComment: comments
   })
 
@@ -172,7 +172,7 @@ function parse(doc) {
   /** @type {EstreeComment[]} */
   var comments = []
   /** @type {EstreeProgram} */
-  // @ts-ignore
+  // @ts-expect-error
   var tree = acornParse(doc, {ecmaVersion: 2020, onComment: comments})
   return [tree, comments]
 }
@@ -182,16 +182,16 @@ function parse(doc) {
  * @returns {void}
  */
 function removePositions(value) {
-  // @ts-ignore
   visit(
+    // @ts-expect-error
     value,
     /**
      * @param {EstreeNode} node
      */
     function (node) {
-      // @ts-ignore they most certainly exist.
+      // @ts-expect-error they most certainly exist.
       delete node.start
-      // @ts-ignore they most certainly exist.
+      // @ts-expect-error they most certainly exist.
       delete node.end
     }
   )

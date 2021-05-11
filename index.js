@@ -1,5 +1,3 @@
-var push = [].push
-
 /**
  * @typedef {import('estree').BaseNode} EstreeNode
  * @typedef {import('estree').Comment} EstreeComment
@@ -72,10 +70,7 @@ function walk(node, state) {
   children.sort(compare)
 
   // Initial comments.
-  push.apply(
-    comments,
-    slice(state, node, false, {leading: true, trailing: false})
-  )
+  comments.push(...slice(state, node, false, {leading: true, trailing: false}))
 
   index = -1
 
@@ -84,16 +79,15 @@ function walk(node, state) {
   }
 
   // Dangling or trailing comments.
-  push.apply(
-    comments,
-    slice(state, node, true, {
+  comments.push(
+    ...slice(state, node, true, {
       leading: false,
       trailing: Boolean(children.length)
     })
   )
 
   if (comments.length) {
-    // @ts-ignore, yes, because they’re nonstandard.
+    // @ts-expect-error, yes, because they’re nonstandard.
     node.comments = comments
   }
 }
@@ -143,7 +137,7 @@ function compare(left, right, compareEnd) {
   // Just `start` (and `end`) on nodes.
   // Default in most parsers.
   if ('start' in left && field in right) {
-    // @ts-ignore Added by Acorn
+    // @ts-expect-error Added by Acorn
     return left.start - right[field]
   }
 
