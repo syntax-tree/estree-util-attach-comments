@@ -8,12 +8,16 @@
 [![Backers][backers-badge]][collective]
 [![Chat][chat-badge]][chat]
 
-Attach semistandard [estree][] comment nodes (such as from [espree][] or
-[acorn][] with a couple lines of code) to the nodes in that tree.
+Attach semistandard [estree][] comment nodes (such as from [acorn][] with a
+couple lines of code) to the nodes in that tree.
 
 This is useful because certain estree parsers give you an array (espree and
 acorn) whereas other estree tools expect comments to be embedded on nodes in the
 tree.
+
+This package uses one `comments` array where each comment has `leading`
+and `trailing` fields.
+Note that espree uses slightly different non-standard comments.
 
 ## Install
 
@@ -71,17 +75,6 @@ a(
 
 Note that the lines are added by `recast` in this case.
 And, some of these weird comments are off, but they’re pretty close.
-
-With espree:
-
-```js
-import espree from 'espree'
-import {attachComments} from 'estree-util-attach-comments'
-
-var tree = espree.parse(code, {comment: true, ecmaVersion: 2020})
-
-attachComments(tree, tree.comments)
-```
 
 ## API
 
@@ -155,7 +148,5 @@ and direct `start` / `end` fields.
 [acorn]: https://github.com/acornjs/acorn
 
 [estree]: https://github.com/estree/estree
-
-[espree]: https://github.com/eslint/espree
 
 [program]: https://github.com/estree/estree/blob/master/es5.md#programs
