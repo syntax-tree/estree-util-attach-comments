@@ -4,6 +4,9 @@
 [![Coverage][coverage-badge]][coverage]
 [![Downloads][downloads-badge]][downloads]
 [![Size][size-badge]][size]
+[![Sponsors][sponsors-badge]][collective]
+[![Backers][backers-badge]][collective]
+[![Chat][chat-badge]][chat]
 
 Attach semistandard [estree][] comment nodes (such as from [espree][] or
 [acorn][] with a couple lines of code) to the nodes in that tree.
@@ -117,13 +120,13 @@ and direct `start` / `end` fields.
 
 <!-- Definitions -->
 
-[build-badge]: https://github.com/wooorm/estree-util-attach-comments/workflows/main/badge.svg
+[build-badge]: https://github.com/syntax-tree/estree-util-attach-comments/workflows/main/badge.svg
 
-[build]: https://github.com/wooorm/estree-util-attach-comments/actions
+[build]: https://github.com/syntax-tree/estree-util-attach-comments/actions
 
-[coverage-badge]: https://img.shields.io/codecov/c/github/wooorm/estree-util-attach-comments.svg
+[coverage-badge]: https://img.shields.io/codecov/c/github/syntax-tree/estree-util-attach-comments.svg
 
-[coverage]: https://codecov.io/github/wooorm/estree-util-attach-comments
+[coverage]: https://codecov.io/github/syntax-tree/estree-util-attach-comments
 
 [downloads-badge]: https://img.shields.io/npm/dm/estree-util-attach-comments.svg
 
@@ -132,6 +135,16 @@ and direct `start` / `end` fields.
 [size-badge]: https://img.shields.io/bundlephobia/minzip/estree-util-attach-comments.svg
 
 [size]: https://bundlephobia.com/result?p=estree-util-attach-comments
+
+[sponsors-badge]: https://opencollective.com/unified/sponsors/badge.svg
+
+[backers-badge]: https://opencollective.com/unified/backers/badge.svg
+
+[collective]: https://opencollective.com/unified
+
+[chat-badge]: https://img.shields.io/badge/chat-discussions-success.svg
+
+[chat]: https://github.com/syntax-tree/unist/discussions
 
 [npm]: https://docs.npmjs.com/cli/install
 
