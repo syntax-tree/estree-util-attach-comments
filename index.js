@@ -48,6 +48,7 @@ function walk(node, state) {
   for (key in node) {
     if (own.call(node, key)) {
       /** @type {EstreeNode|EstreeNode[]} */
+      // @ts-expect-error: indexable.
       const value = node[key]
 
       // Ignore comments.
