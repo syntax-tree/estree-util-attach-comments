@@ -10,7 +10,7 @@ import {attachComments} from './index.js'
  * @typedef {import('estree').Comment} EstreeComment
  */
 
-test('estree-attach-comments (recast)', function (t) {
+test('estree-attach-comments (recast)', (t) => {
   t.equal(
     recast.print(attachComments(...parse(''))).code,
     '',
@@ -79,10 +79,10 @@ test('estree-attach-comments (recast)', function (t) {
   )
 
   /** @type {EstreeComment[]} */
-  var comments = []
+  let comments = []
   /** @type {EstreeProgram} */
   // @ts-expect-error
-  var tree = acornParse('/* 1 */ a /* 2 */ + /* 3 */ 1', {
+  let tree = acornParse('/* 1 */ a /* 2 */ + /* 3 */ 1', {
     ecmaVersion: 2020,
     // @ts-expect-error
     onComment: comments
@@ -170,10 +170,10 @@ test('estree-attach-comments (recast)', function (t) {
  */
 function parse(doc) {
   /** @type {EstreeComment[]} */
-  var comments = []
+  const comments = []
   /** @type {EstreeProgram} */
   // @ts-expect-error
-  var tree = acornParse(doc, {ecmaVersion: 2020, onComment: comments})
+  const tree = acornParse(doc, {ecmaVersion: 2020, onComment: comments})
   return [tree, comments]
 }
 
@@ -188,7 +188,7 @@ function removePositions(value) {
     /**
      * @param {EstreeNode} node
      */
-    function (node) {
+    (node) => {
       // @ts-expect-error they most certainly exist.
       delete node.start
       // @ts-expect-error they most certainly exist.

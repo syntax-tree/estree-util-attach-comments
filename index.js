@@ -11,6 +11,8 @@
  * @property {boolean} trailing
  */
 
+const own = {}.hasOwnProperty
+
 /**
  * Attach semistandard estree comment nodes to the tree.
  *
@@ -18,8 +20,8 @@
  * @param {EstreeComment[]} [comments]
  */
 export function attachComments(tree, comments) {
-  var list = (comments || []).concat().sort(compare)
-  if (list.length) walk(tree, {comments: list, index: 0})
+  const list = (comments || []).concat().sort(compare)
+  if (list.length > 0) walk(tree, {comments: list, index: 0})
   return tree
 }
 
@@ -30,38 +32,37 @@ export function attachComments(tree, comments) {
  * @param {State} state
  */
 function walk(node, state) {
-  /** @type {EstreeNode[]} */
-  var children = []
-  /** @type {EstreeComment[]} */
-  var comments = []
-  /** @type {string} */
-  var key
-  /** @type {EstreeNode|EstreeNode[]} */
-  var value
-  /** @type {number} */
-  var index
-
   // Done, we can quit.
   if (state.index === state.comments.length) {
     return
   }
 
+  /** @type {EstreeNode[]} */
+  const children = []
+  /** @type {EstreeComment[]} */
+  const comments = []
+  /** @type {string} */
+  let key
+
   // Find all children of `node`
   for (key in node) {
-    value = node[key]
+    if (own.call(node, key)) {
+      /** @type {EstreeNode|EstreeNode[]} */
+      const value = node[key]
 
-    // Ignore comments.
-    if (value && typeof value === 'object' && key !== 'comments') {
-      if (Array.isArray(value)) {
-        index = -1
+      // Ignore comments.
+      if (value && typeof value === 'object' && key !== 'comments') {
+        if (Array.isArray(value)) {
+          let index = -1
 
-        while (++index < value.length) {
-          if (value[index] && typeof value[index].type === 'string') {
-            children.push(value[index])
+          while (++index < value.length) {
+            if (value[index] && typeof value[index].type === 'string') {
+              children.push(value[index])
+            }
           }
+        } else if (typeof value.type === 'string') {
+          children.push(value)
         }
-      } else if (typeof value.type === 'string') {
-        children.push(value)
       }
     }
   }
@@ -72,7 +73,7 @@ function walk(node, state) {
   // Initial comments.
   comments.push(...slice(state, node, false, {leading: true, trailing: false}))
 
-  index = -1
+  let index = -1
 
   while (++index < children.length) {
     walk(children[index], state)
@@ -82,11 +83,11 @@ function walk(node, state) {
   comments.push(
     ...slice(state, node, true, {
       leading: false,
-      trailing: Boolean(children.length)
+      trailing: children.length > 0
     })
   )
 
-  if (comments.length) {
+  if (comments.length > 0) {
     // @ts-expect-error, yes, because they’re nonstandard.
     node.comments = comments
   }
@@ -100,7 +101,7 @@ function walk(node, state) {
  */
 function slice(state, node, compareEnd, fields) {
   /** @type {EstreeComment[]} */
-  var result = []
+  const result = []
 
   while (
     state.comments[state.index] &&
@@ -119,7 +120,7 @@ function slice(state, node, compareEnd, fields) {
  * @returns {number}
  */
 function compare(left, right, compareEnd) {
-  var field = compareEnd ? 'end' : 'start'
+  const field = compareEnd ? 'end' : 'start'
 
   // Offsets.
   if (left.range && right.range) {
@@ -141,5 +142,5 @@ function compare(left, right, compareEnd) {
     return left.start - right[field]
   }
 
-  return NaN
+  return Number.NaN
 }

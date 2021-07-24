@@ -45,8 +45,8 @@ import * as acorn from 'acorn'
 import recast from 'recast'
 import {attachComments} from 'estree-util-attach-comments'
 
-var comments = []
-var tree = acorn.parse(code, {ecmaVersion: 2020, onComment: comments})
+const comments = []
+const tree = acorn.parse(code, {ecmaVersion: 2020, onComment: comments})
 
 attachComments(tree, comments)
 
