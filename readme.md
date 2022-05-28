@@ -8,43 +8,79 @@
 [![Backers][backers-badge]][collective]
 [![Chat][chat-badge]][chat]
 
-Attach semistandard [estree][] comment nodes (such as from [acorn][] with a
-couple lines of code) to the nodes in that tree.
+[estree][] utility attach semistandard comment nodes (such as from [acorn][]) to
+the nodes in that tree.
 
+## Contents
+
+*   [What is this?](#what-is-this)
+*   [When should I use this?](#when-should-i-use-this)
+*   [Install](#install)
+*   [Use](#use)
+*   [API](#api)
+    *   [`attachComments(tree, comments)`](#attachcommentstree-comments)
+*   [Types](#types)
+*   [Compatibility](#compatibility)
+*   [Contribute](#contribute)
+*   [License](#license)
+
+## What is this?
+
+This package is a utility that you can use to embed comment nodes *inside* a
+tree.
 This is useful because certain estree parsers give you an array (espree and
 acorn) whereas other estree tools expect comments to be embedded on nodes in the
 tree.
 
-This package uses one `comments` array where each comment has `leading`
-and `trailing` fields.
-Note that espree uses slightly different non-standard comments.
+This package uses one `comments` array where each comment has `leading` and
+`trailing` fields, as applied by `acorn`, but does not support the slightly
+different non-standard comments made by `espree`.
+
+## When should I use this?
+
+You can use this package when working with comments from Acorn and later working
+with a tool such as recast or Babel.
 
 ## Install
 
-This package is ESM only: Node 12+ is needed to use it and it must be `import`ed
-instead of `require`d.
-
-[npm][]:
+This package is [ESM only][esm].
+In Node.js (version 12.20+, 14.14+, 16.0+, or 18.0+), install with [npm][]:
 
 ```sh
 npm install estree-util-attach-comments
 ```
 
+In Deno with [`esm.sh`][esmsh]:
+
+```js
+import {attachComments} from 'https://esm.sh/estree-util-attach-comments@2'
+```
+
+In browsers with [`esm.sh`][esmsh]:
+
+```html
+<script type="module">
+  import {attachComments} from 'https://esm.sh/estree-util-attach-comments@2?bundle'
+</script>
+```
+
 ## Use
 
-Say we have this weird `code`:
+Say our document `index.js` contains:
 
 ```js
 /* 1 */ function /* 2 */ a /* 3 */ (/* 4 */b) /* 5 */ { /* 6 */ return /* 7 */ b + /* 8 */ 1 /* 9 */ }
 ```
 
-And our script, `example.js`, looks as follows:
+…and our module `example.js` looks as follows:
 
 ```js
+import fs from 'node:fs/promises'
 import * as acorn from 'acorn'
 import recast from 'recast'
 import {attachComments} from 'estree-util-attach-comments'
 
+const code = String(await fs.readFile('index.js'))
 const comments = []
 const tree = acorn.parse(code, {ecmaVersion: 2020, onComment: comments})
 
@@ -73,12 +109,12 @@ a(
 }/* 9 */
 ```
 
-Note that the lines are added by `recast` in this case.
-And, some of these weird comments are off, but they’re pretty close.
+> 👉 **Note**: the lines are added by `recast` in this case.
+> And, some of these weird comments are off, but they’re pretty close.
 
 ## API
 
-This package exports the following identifiers: `attachComments`.
+This package exports the identifier `attachComments`.
 There is no default export.
 
 ### `attachComments(tree, comments)`
@@ -105,7 +141,29 @@ and direct `start` / `end` fields.
 
 ###### Returns
 
-`Node` — The given `tree`.
+The given `tree` (`Node`).
+
+## Types
+
+This package is fully typed with [TypeScript][].
+It exports no additional types.
+
+## Compatibility
+
+Projects maintained by the unified collective are compatible with all maintained
+versions of Node.js.
+As of now, that is Node.js 12.20+, 14.14+, 16.0+, and 18.0+.
+Our projects sometimes work with older versions, but this is not guaranteed.
+
+## Contribute
+
+See [`contributing.md`][contributing] in [`syntax-tree/.github`][health] for
+ways to get started.
+See [`support.md`][support] for ways to get help.
+
+This project has a [code of conduct][coc].
+By interacting with this repository, organization, or community you agree to
+abide by its terms.
 
 ## License
 
@@ -141,9 +199,23 @@ and direct `start` / `end` fields.
 
 [npm]: https://docs.npmjs.com/cli/install
 
+[esm]: https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c
+
+[esmsh]: https://esm.sh
+
+[typescript]: https://www.typescriptlang.org
+
 [license]: license
 
 [author]: https://wooorm.com
+
+[health]: https://github.com/syntax-tree/.github
+
+[contributing]: https://github.com/syntax-tree/.github/blob/main/contributing.md
+
+[support]: https://github.com/syntax-tree/.github/blob/main/support.md
+
+[coc]: https://github.com/syntax-tree/.github/blob/main/code-of-conduct.md
 
 [acorn]: https://github.com/acornjs/acorn
 
