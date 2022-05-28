@@ -78,7 +78,7 @@ test('estree-attach-comments (recast)', (t) => {
     'should support a bunch of line comments'
   )
 
-  /** @type {EstreeComment[]} */
+  /** @type {Array<EstreeComment>} */
   let comments = []
   /** @type {EstreeProgram} */
   // @ts-expect-error
@@ -166,10 +166,10 @@ test('estree-attach-comments (recast)', (t) => {
 
 /**
  * @param {string} doc
- * @returns {[EstreeProgram, EstreeComment[]]}
+ * @returns {[EstreeProgram, Array<EstreeComment>]}
  */
 function parse(doc) {
-  /** @type {EstreeComment[]} */
+  /** @type {Array<EstreeComment>} */
   const comments = []
   /** @type {EstreeProgram} */
   // @ts-expect-error
@@ -178,7 +178,7 @@ function parse(doc) {
 }
 
 /**
- * @param {EstreeNode|EstreeNode[]} value
+ * @param {EstreeNode|Array<EstreeNode>} value
  * @returns {void}
  */
 function removePositions(value) {

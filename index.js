@@ -3,7 +3,7 @@
  * @typedef {import('estree').Comment} EstreeComment
  *
  * @typedef State
- * @property {EstreeComment[]} comments
+ * @property {Array<EstreeComment>} comments
  * @property {number} index
  *
  * @typedef Fields
@@ -17,7 +17,7 @@ const own = {}.hasOwnProperty
  * Attach semistandard estree comment nodes to the tree.
  *
  * @param {EstreeNode} tree
- * @param {EstreeComment[]} [comments]
+ * @param {Array<EstreeComment>} [comments]
  */
 export function attachComments(tree, comments) {
   const list = (comments || []).concat().sort(compare)
@@ -37,9 +37,9 @@ function walk(node, state) {
     return
   }
 
-  /** @type {EstreeNode[]} */
+  /** @type {Array<EstreeNode>} */
   const children = []
-  /** @type {EstreeComment[]} */
+  /** @type {Array<EstreeComment>} */
   const comments = []
   /** @type {string} */
   let key
@@ -47,7 +47,7 @@ function walk(node, state) {
   // Find all children of `node`
   for (key in node) {
     if (own.call(node, key)) {
-      /** @type {EstreeNode|EstreeNode[]} */
+      /** @type {EstreeNode|Array<EstreeNode>} */
       // @ts-expect-error: indexable.
       const value = node[key]
 
@@ -101,7 +101,7 @@ function walk(node, state) {
  * @param {Fields} fields
  */
 function slice(state, node, compareEnd, fields) {
-  /** @type {EstreeComment[]} */
+  /** @type {Array<EstreeComment>} */
   const result = []
 
   while (
