@@ -33,7 +33,7 @@
     "index.js"
   ],
   "dependencies": {
-    "@types/estree": "^0.0.51"
+    "@types/estree": "^1.0.0"
   },
   "devDependencies": {
     "@types/acorn": "^4.0.0",
