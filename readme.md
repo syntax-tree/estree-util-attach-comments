@@ -44,7 +44,7 @@ with a tool such as recast or Babel.
 ## Install
 
 This package is [ESM only][esm].
-In Node.js (version 12.20+, 14.14+, 16.0+, or 18.0+), install with [npm][]:
+In Node.js (version 14.14+ and 16.0+), install with [npm][]:
 
 ```sh
 npm install estree-util-attach-comments
@@ -114,14 +114,14 @@ a(
 
 ## API
 
-This package exports the identifier `attachComments`.
+This package exports the identifier [`attachComments`][attachcomments].
 There is no default export.
 
 ### `attachComments(tree, comments)`
 
 Attach semistandard estree comment nodes to the tree.
 
-This mutates the given [`tree`][estree] ([`Program`][program]).
+This mutates the given [`tree`][estree].
 It takes `comments`, walks the tree, and adds comments as close as possible
 to where they originated.
 
@@ -139,9 +139,16 @@ of visitor keys.
 The algorithm supports `loc` fields (line/column), `range` fields (offsets),
 and direct `start` / `end` fields.
 
+###### Parameters
+
+*   `tree` ([`Program`][program])
+    — tree to attach to
+*   `comments` (`Array<EstreeComment>`)
+    — list of comments
+
 ###### Returns
 
-The given `tree` (`Node`).
+The given `tree` ([`Program`][program]).
 
 ## Types
 
@@ -152,7 +159,7 @@ It exports no additional types.
 
 Projects maintained by the unified collective are compatible with all maintained
 versions of Node.js.
-As of now, that is Node.js 12.20+, 14.14+, 16.0+, and 18.0+.
+As of now, that is Node.js 14.14+ and 16.0+.
 Our projects sometimes work with older versions, but this is not guaranteed.
 
 ## Contribute
@@ -222,3 +229,5 @@ abide by its terms.
 [estree]: https://github.com/estree/estree
 
 [program]: https://github.com/estree/estree/blob/master/es5.md#programs
+
+[attachcomments]: #attachcommentstree-comments
