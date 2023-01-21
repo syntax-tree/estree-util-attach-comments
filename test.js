@@ -10,8 +10,15 @@ import {parse as acornParse} from 'acorn'
 import recast from 'recast'
 import {visit} from 'estree-util-visit'
 import {attachComments} from './index.js'
+import * as mod from './index.js'
 
-test('estree-attach-comments (recast)', () => {
+test('attachComments', () => {
+  assert.deepEqual(
+    Object.keys(mod).sort(),
+    ['attachComments'],
+    'should expose the public api'
+  )
+
   assert.equal(
     recast.print(attachComments(...parse(''))).code,
     '',
