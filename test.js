@@ -1,41 +1,42 @@
-import test from 'tape'
-import {parse as acornParse} from 'acorn'
-import recast from 'recast'
-import {visit} from 'estree-util-visit'
-import {attachComments} from './index.js'
-
 /**
  * @typedef {import('estree').BaseNode} EstreeNode
  * @typedef {import('estree').Program} EstreeProgram
  * @typedef {import('estree').Comment} EstreeComment
  */
 
-test('estree-attach-comments (recast)', (t) => {
-  t.equal(
+import assert from 'node:assert/strict'
+import test from 'node:test'
+import {parse as acornParse} from 'acorn'
+import recast from 'recast'
+import {visit} from 'estree-util-visit'
+import {attachComments} from './index.js'
+
+test('estree-attach-comments (recast)', () => {
+  assert.equal(
     recast.print(attachComments(...parse(''))).code,
     '',
     'should support an empty document'
   )
 
-  t.equal(
+  assert.equal(
     recast.print(attachComments(...parse('a + 1'))).code,
     'a + 1;',
     'should support no comments'
   )
 
-  t.equal(
+  assert.equal(
     recast.print(attachComments(...parse('/* ! */'))).code,
     '/* ! */\n',
     'should support a single block comment'
   )
 
-  t.equal(
+  assert.equal(
     recast.print(attachComments(...parse('// !'))).code,
     '// !\n',
     'should support a single line comment'
   )
 
-  t.equal(
+  assert.equal(
     recast.print(
       attachComments(...parse('/* 1 */ function a (/* 2 */b) { return b + 1 }'))
     ).code,
@@ -43,7 +44,7 @@ test('estree-attach-comments (recast)', (t) => {
     'should support some comments'
   )
 
-  t.equal(
+  assert.equal(
     recast.print(
       attachComments(
         ...parse(
@@ -58,7 +59,7 @@ test('estree-attach-comments (recast)', (t) => {
   // Recast parses `4` as “dangling”:
   // <https://github.com/benjamn/recast/blob/dd7c5ec/lib/comments.ts#L255-L256>
   // But apprently doesn’t serialize it?
-  t.equal(
+  assert.equal(
     recast.print(
       attachComments(...parse('/* 1 */ a /* 2 */ = /* 3 */ { /* 4 */ }'))
     ).code,
@@ -66,7 +67,7 @@ test('estree-attach-comments (recast)', (t) => {
     'should support some more comments'
   )
 
-  t.equal(
+  assert.equal(
     recast.print(
       attachComments(
         ...parse(
@@ -90,7 +91,7 @@ test('estree-attach-comments (recast)', (t) => {
 
   removePositions(tree)
 
-  t.equal(
+  assert.equal(
     recast.print(attachComments(tree, comments)).code,
     'a + 1;',
     'should not fail on a tree w/o positional info'
@@ -104,7 +105,7 @@ test('estree-attach-comments (recast)', (t) => {
     onComment: comments
   })
 
-  t.equal(
+  assert.equal(
     recast.print(attachComments(tree)).code,
     '1 + 1;',
     'should not fail w/o comments'
@@ -121,7 +122,7 @@ test('estree-attach-comments (recast)', (t) => {
 
   removePositions(comments)
 
-  t.equal(
+  assert.equal(
     recast.print(attachComments(tree, comments)).code,
     'a + 1;',
     'should not fail on comments w/o positional info'
@@ -138,7 +139,7 @@ test('estree-attach-comments (recast)', (t) => {
 
   removePositions(tree)
 
-  t.equal(
+  assert.equal(
     recast.print(attachComments(tree, comments)).code,
     '/* 1 */\na + /* 2 */\n/* 3 */\n1;',
     'should use `range`s'
@@ -155,13 +156,11 @@ test('estree-attach-comments (recast)', (t) => {
 
   removePositions(tree)
 
-  t.equal(
+  assert.equal(
     recast.print(attachComments(tree, comments)).code,
     '/* 1 */\na + /* 2 */\n/* 3 */\n1;',
     'should use `loc`s'
   )
-
-  t.end()
 })
 
 /**
