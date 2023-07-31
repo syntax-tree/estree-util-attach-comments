@@ -66,23 +66,29 @@ In browsers with [`esm.sh`][esmsh]:
 
 ## Use
 
-Say our document `index.js` contains:
+Say our document `x.js` contains:
 
 ```js
-/* 1 */ function /* 2 */ a /* 3 */ (/* 4 */b) /* 5 */ { /* 6 */ return /* 7 */ b + /* 8 */ 1 /* 9 */ }
+/* 1 */ function /* 2 */ a /* 3 */(/* 4 */ b) /* 5 */ {
+  /* 6 */ return /* 7 */ b + /* 8 */ 1 /* 9 */
+}
 ```
 
 …and our module `example.js` looks as follows:
 
 ```js
 import fs from 'node:fs/promises'
-import * as acorn from 'acorn'
-import recast from 'recast'
+import {parse} from 'acorn'
 import {attachComments} from 'estree-util-attach-comments'
+import recast from 'recast'
 
-const code = String(await fs.readFile('index.js'))
+const code = String(await fs.readFile('x.js'))
 const comments = []
-const tree = acorn.parse(code, {ecmaVersion: 2020, onComment: comments})
+const tree = parse(code, {
+  sourceType: 'module',
+  ecmaVersion: 2020,
+  onComment: comments
+})
 
 attachComments(tree, comments)
 
@@ -148,7 +154,7 @@ and direct `start` / `end` fields.
 
 ###### Returns
 
-The given `tree` ([`Program`][program]).
+Nothing (`undefined`).
 
 ## Types
 
