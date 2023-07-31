@@ -7,15 +7,16 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
 import {parse as acornParse} from 'acorn'
-import recast from 'recast'
+import {attachComments} from 'estree-util-attach-comments'
 import {visit} from 'estree-util-visit'
-import {attachComments} from './index.js'
+import recast from 'recast'
 
 test('attachComments', async function (t) {
   await t.test('should expose the public api', async function () {
-    assert.deepEqual(Object.keys(await import('./index.js')).sort(), [
-      'attachComments'
-    ])
+    assert.deepEqual(
+      Object.keys(await import('estree-util-attach-comments')).sort(),
+      ['attachComments']
+    )
   })
 
   await t.test('should support an empty document', async function () {
