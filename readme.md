@@ -53,14 +53,14 @@ npm install estree-util-attach-comments
 In Deno with [`esm.sh`][esmsh]:
 
 ```js
-import {attachComments} from 'https://esm.sh/estree-util-attach-comments@2'
+import {attachComments} from 'https://esm.sh/estree-util-attach-comments@3'
 ```
 
 In browsers with [`esm.sh`][esmsh]:
 
 ```html
 <script type="module">
-  import {attachComments} from 'https://esm.sh/estree-util-attach-comments@2?bundle'
+  import {attachComments} from 'https://esm.sh/estree-util-attach-comments@3?bundle'
 </script>
 ```
 
