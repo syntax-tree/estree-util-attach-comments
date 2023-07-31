@@ -44,7 +44,7 @@ with a tool such as recast or Babel.
 ## Install
 
 This package is [ESM only][esm].
-In Node.js (version 14.14+ and 16.0+), install with [npm][]:
+In Node.js (version 16+), install with [npm][]:
 
 ```sh
 npm install estree-util-attach-comments
@@ -86,7 +86,7 @@ const code = String(await fs.readFile('x.js'))
 const comments = []
 const tree = parse(code, {
   sourceType: 'module',
-  ecmaVersion: 2020,
+  ecmaVersion: 'latest',
   onComment: comments
 })
 
@@ -120,7 +120,7 @@ a(
 
 ## API
 
-This package exports the identifier [`attachComments`][attachcomments].
+This package exports the identifier [`attachComments`][api-attach-comments].
 There is no default export.
 
 ### `attachComments(tree, comments)`
@@ -163,10 +163,13 @@ It exports no additional types.
 
 ## Compatibility
 
-Projects maintained by the unified collective are compatible with all maintained
+Projects maintained by the unified collective are compatible with maintained
 versions of Node.js.
-As of now, that is Node.js 14.14+ and 16.0+.
-Our projects sometimes work with older versions, but this is not guaranteed.
+
+When we cut a new major release, we drop support for unmaintained versions of
+Node.
+This means we try to keep the current release line,
+`estree-util-attach-comments@^2`, compatible with Node.js 12.
 
 ## Contribute
 
@@ -196,9 +199,9 @@ abide by its terms.
 
 [downloads]: https://www.npmjs.com/package/estree-util-attach-comments
 
-[size-badge]: https://img.shields.io/bundlephobia/minzip/estree-util-attach-comments.svg
+[size-badge]: https://img.shields.io/badge/dynamic/json?label=minzipped%20size&query=$.size.compressedSize&url=https://deno.bundlejs.com/?q=estree-util-attach-comments
 
-[size]: https://bundlephobia.com/result?p=estree-util-attach-comments
+[size]: https://bundlejs.com/?q=estree-util-attach-comments
 
 [sponsors-badge]: https://opencollective.com/unified/sponsors/badge.svg
 
@@ -236,4 +239,4 @@ abide by its terms.
 
 [program]: https://github.com/estree/estree/blob/master/es5.md#programs
 
-[attachcomments]: #attachcommentstree-comments
+[api-attach-comments]: #attachcommentstree-comments
